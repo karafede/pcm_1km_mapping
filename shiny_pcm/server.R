@@ -6,7 +6,7 @@ library(leaflet)
 library(RColorBrewer)
 library(sp)
 
-setwd("C:/RICARDO-AEA/pcm_1km_mapping/data_pcm_PM10_output")
+# setwd("C:/RICARDO-AEA/pcm_1km_mapping/data_pcm_PM10_output")
 
 #### Load rasters (only .tif or .rds files format)
 
@@ -25,6 +25,21 @@ mappm102011g <- readRDS("pm102011g.rds")
 mappm102012g <- readRDS("pm102012g.rds")
 mappm102013g <- readRDS("pm102013g.rds")
 mappm102014g <- readRDS("pm102014g.rds")
+
+# mappm102001 <- raster::raster("pm102001.tif")
+# mappm102002 <- raster::raster("pm102002.tif")
+# mappm102003s15a <- raster::raster("pm102003s15a.tif")
+# mappm102004g <- raster::raster("pm102004g.tif")
+# mappm1005ac <- raster::raster(("pm1005ac.tif"))
+# mappm102006gh <- raster::raster("pm102006gh.tif")
+# mappm102007g <- raster::raster("pm102007g.tif")
+# mappm102008g <- raster::raster ("pm102008g.tif")
+# mappm102009g <- raster::raster("pm102009g.tif")
+# mappm102010g <- raster::raster ("pm102010g.tif")
+# mappm102011g <- raster::raster("pm102011g.tif")
+# mappm102012g <- raster::raster("pm102012g.tif")
+# mappm102013g <- raster::raster("pm102013g.tif")
+# mappm102014g <- raster::raster("pm102014g.tif")
 
 
 

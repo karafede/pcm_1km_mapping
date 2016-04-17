@@ -20,8 +20,15 @@ rm(list = ls(all = TRUE))
 options(stringsAsFactors = FALSE)
 
 # Set working directory
-setwd("C:/RICARDO-AEA/pcm_1km_mapping/data_pcm_PM10_input")
-dir <- "C:/RICARDO-AEA/pcm_1km_mapping/data_pcm_PM10_output"
+# setwd("C:/RICARDO-AEA/pcm_1km_mapping/data_pcm_PM10_input")
+# setwd("C:/RICARDO-AEA/pcm_1km_mapping/data_pcm_PM2.5_input")
+# setwd("C:/RICARDO-AEA/pcm_1km_mapping/data_pcm_NO2_input")
+setwd("C:/RICARDO-AEA/pcm_1km_mapping/data_pcm_NOx_input")
+
+# dir <- "C:/RICARDO-AEA/pcm_1km_mapping/data_pcm_PM10_output"
+# dir <- "C:/RICARDO-AEA/pcm_1km_mapping/data_pcm_PM25_output"
+# dir <- "C:/RICARDO-AEA/pcm_1km_mapping/data_pcm_NO2_output"
+dir <- "C:/RICARDO-AEA/pcm_1km_mapping/data_pcm_NOx_output"
 
 # Variables for holding the coordinate system types (see:
 # http://www.epsg.org/ for details)
@@ -64,8 +71,8 @@ pcm_data_mgt <- function (file) {
 
   writeRaster(pcm_tif_longlat,paste(dir,"/",name, ".tif",sep =""), overwrite = TRUE)
   # reload geoTiff file in WGS84 coordinates
-  pcm_tif_longlat <- raster::raster(paste(dir,"/",name, ".tif",sep =""))
-  saveRDS(pcm_tif_longlat, paste(dir,"/", name,".rds",sep = ""))
+  # pcm_tif_longlat <- raster::raster(paste(dir,"/",name, ".tif",sep =""))
+  # saveRDS(pcm_tif_longlat, paste(dir,"/", name,".rds",sep = ""))
 }
 
 ###############################################################  
@@ -73,7 +80,13 @@ pcm_data_mgt <- function (file) {
 
 ## list all .csv pcm files in specific folder
 
-file_list <- list.files(path = "C:/RICARDO-AEA/pcm_1km_mapping/data_pcm_PM10_input/", pattern = "\\.csv$",
+# file_list <- list.files(path = "C:/RICARDO-AEA/pcm_1km_mapping/data_pcm_PM10_input/", pattern = "\\.csv$",
+#                         full.names = TRUE)
+# file_list <- list.files(path = "C:/RICARDO-AEA/pcm_1km_mapping/data_pcm_PM2.5_input/", pattern = "\\.csv$",
+#                         full.names = TRUE)
+# file_list <- list.files(path = "C:/RICARDO-AEA/pcm_1km_mapping/data_pcm_NO2_input/", pattern = "\\.csv$",
+#                         full.names = TRUE)
+file_list <- list.files(path = "C:/RICARDO-AEA/pcm_1km_mapping/data_pcm_NOx_input/", pattern = "\\.csv$",
                         full.names = TRUE)
 
 # Apply function to all files

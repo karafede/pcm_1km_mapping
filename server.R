@@ -5,6 +5,7 @@ library(dplyr)
 library(leaflet)
 library(RColorBrewer)
 library(sp)
+library(shinydashboard)
 
 # setwd("C:/RICARDO-AEA/pcm_1km_mapping/data_pcm_PM10_output")
 # setwd("C:/RICARDO-AEA/pcm_1km_mapping/shiny_pcm")
@@ -50,6 +51,14 @@ rownames(df_PM10)=NULL
 colnames(df_PM10) <- c("year_PM10", "layer_PM10")
 PM10_raster <- as.character(filter(df_PM10, year_PM10 == 2002))[2]
 
+MIN_PM10 <- min(minValue(mappm102001), minValue(mappm102002),  minValue(mappm102003), minValue(mappm102004), minValue(mappm102005),
+           minValue(mappm102006), minValue(mappm102007), minValue(mappm102008), minValue(mappm102009), minValue(mappm102010),
+           minValue(mappm102011), minValue(mappm102012), minValue(mappm102013), minValue(mappm102014))
+
+MAX_PM10 <- max(maxValue(mappm102001), maxValue(mappm102002),  maxValue(mappm102003), maxValue(mappm102004), maxValue(mappm102005),
+           maxValue(mappm102006), maxValue(mappm102007),maxValue(mappm102008),maxValue(mappm102009),maxValue(mappm102010),
+           maxValue(mappm102011),maxValue(mappm102012),maxValue(mappm102013),maxValue(mappm102014))
+
 
 # PM2.5
 mappm252002 <- raster::raster("pm252002.tif")
@@ -76,9 +85,15 @@ shinyServer(function(input, output) {
      PM10_raster <- as.character(filter(df_PM10, year_PM10 == input$year))[2]
   #  PM10_raster <- input$year
    # PM10_raster <- input$variable_raster_PM10
-      rast_pal_PM10 <- colorNumeric(c("#9999ff", "#ffffcc", "#ff0000"), 
-                              getValues(get(PM10_raster)),
-                      na.color = "transparent")
+#       rast_pal_PM10 <- colorNumeric(c("#9999ff", "#ffffcc", "#ff0000"), 
+#                               getValues(get(PM10_raster)),
+#                       na.color = "transparent")
+     
+      ## create an unique legend for PM10
+     rast_pal_PM10 <- colorNumeric(c("#9999ff", "#ffffcc", "#ff0000"), 
+                               c(MIN_PM10,MAX_PM10),
+                               na.color = "transparent")
+      
     
     PM25_raster <- input$variable_raster_PM25
       rast_pal_PM25 <- colorNumeric(c("#9999ff", "#ffffcc", "#ff0000"), 
@@ -119,11 +134,17 @@ shinyServer(function(input, output) {
           PM10_raster == as.character(filter(df_PM10, year_PM10 == input$year))[2]) {
         # PM10_raster == input$year) {
         
+        # define popup for PM10 
+      #  "h1 { font-size: 4px;}"
+        content <- paste('<h3><strong>', input$year,'(PM<sub>10</sub>)', sep = "")
+        
       map <- map %>% 
+        addPopups(-1.4, 54.9, content,
+                  options = popupOptions(closeButton = FALSE)) %>%
         addRasterImage(get(PM10_raster), 
                        colors = rast_pal_PM10, 
                        opacity = 0.6) %>%
-        addLegend("bottomright", pal = rast_pal_PM10, values = getValues(get(PM10_raster)),
+        addLegend("bottomright", pal = rast_pal_PM10, values = c(MIN_PM10, MAX_PM10),
                   title = "<br><strong>PM<sub>10</sub> (<font face=symbol>m</font>g/m<sup>3</sup>): </strong>",
                   labFormat = labelFormat(prefix = ""),
                   opacity = 0.6)
@@ -184,15 +205,15 @@ shinyServer(function(input, output) {
     
     #  image_file <- paste("www/",input$image.type,".jpeg",sep="")
     # image_file <- "C:/RICARDO-AEA/pcm_1km_mapping/shiny_pcm/animated.gif"
-    image_file <- "animated.gif"
+    image_file_PM10 <- "animated_PM10_pcm.gif"
     
     # animated image for PM10
     return(list(
-      src = image_file,
+      src = image_file_PM10,
       filetype = "image/gif",
       
-      height = 280, #520
-      width = 356 #696
+      height = 380, #520
+      width = 456 #696
     ))
     
   }, deleteFile = FALSE)

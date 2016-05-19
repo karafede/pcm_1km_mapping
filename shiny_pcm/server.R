@@ -197,6 +197,8 @@ shinyServer(function(input, output) {
     
   })
   
+  
+  #### add lleaflet map and animated image
 
   # Return to client
   output$myMap = renderLeaflet(finalMap())
